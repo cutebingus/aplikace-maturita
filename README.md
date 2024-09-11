@@ -1,4 +1,4 @@
-****Aplikace na zapis cviku v posilovne****
+**Aplikace na zapis cviku v posilovne**
 
 1. Budete si moct oznacit svalovou partii 
 2. Potom vyskoci nabidka cviku a jejich spravne provedeni
