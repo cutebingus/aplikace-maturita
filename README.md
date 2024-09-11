@@ -1,4 +1,4 @@
-*Aplikace na zapis cviku v posilovne*
+**Aplikace na zapis cviku v posilovne**
 
 1. budete si moct oznacit cast tela
 2. potom nabehne nabidka cviku a jejich spravne provedeni
@@ -7,7 +7,12 @@
 5. budete si tam moct zapsat vasi rutinu na cviceni a dopisovat si to
 
 
-Konkurence
+**Konkurence**
 aplikace s podobnym vyuzitim v iStoru
 
-technologie
+**Technologie**
+Frontend: React Native, Flutter, Swift(IOS)
+Backend: MySQL(databaze)
+API: REST API
+Github
+
