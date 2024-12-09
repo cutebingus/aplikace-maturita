@@ -1,20 +1,41 @@
-**Aplikace na zapis cviku v posilovne**
+### **Kalorické tabulky **
 
-1. Budete si moct oznacit svalovou partii 
-2. Potom vyskoci nabidka cviku a jejich spravne provedeni
-3. Tam si vyberete cvik a po docviceni zapisete pocet opakovani
-4. Bude tam i hodnoceni na vasi telesnou vahu a silu (ucel bude motivovat se zlepsovat a posouvat se dale)
-5. Budete si tam moct zapsat vasi rutinu na cviceni a dopisovat si to
+#### **Hlavní funkce**
+1. **Záznam denního příjmu potravy**  
+   - Možnost zapisovat jednotlivé potraviny a jejich nutriční hodnoty:  
+     - Bílkoviny  
+     - Sacharidy  
+     - Tuky  
+     - Vláknina  
+   - Automatický výpočet celkového denního příjmu kalorií a makroživin.  
 
+2. **Příjem tekutin**  
+   - Funkce pro sledování denního příjmu vody.  
 
-**Konkurence**
+3. **Osobní cíle**  
+   - Výpočet denního kalorického příjmu na základě vašich údajů:  
+     - Výška  
+     - Váha  
+     - Věk  
+     - Cíle (např. hubnutí, udržení váhy, nabírání svalové hmoty).  
 
-Aplikace s podobnym vyuzitim v iStoru
+4. **Hlavní stránka aplikace**  
+   - Přehledný dashboard zobrazující:  
+     - Celkový příjem kalorií.  
+     - Splněné aktivity.  
+     - Příjem tekutin.  
+     - Hmotnost.  
+   - Podrobnosti o přijatých hodnotách:  
+     - Celkové kalorie.  
+     - Bílkoviny, sacharidy, tuky, vláknina.  
+     - Denní cíle pro jednotlivé složky.
 
-**Technologie**
+#### **Konkurence**
+Podobné aplikace dostupné na trhu (např. MyFitnessPal nebo Yazio).
 
-Frontend: React Native, Flutter, Swift(IOS)
-Backend: MySQL(databaze)
-API: REST API
-Github
+#### **Technologie**
+- **Frontend**: Flutter (podpora pro Android i iOS).  
+- **Backend**: MySQL (databáze).  
+- **API**: REST API pro komunikaci mezi frontendem a databází.  
+
 
