@@ -60,22 +60,6 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Container(
                 color: Colors.white,
-                padding: const EdgeInsets.only(top: 50, left: 32, right: 16, bottom: 10),
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text("Date, Year", style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),),
-                      subtitle: Text("Hello David", style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),),
-                      trailing: Image.asset("assets/user.jpg"),
-                    )
-                  ],
-                ),
               ),
             ),
           ),
@@ -109,9 +93,6 @@ class ProfileScreen extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: <Widget>[
-                          SizedBox(
-                            width: 32,
-                            ),
                           for(int i = 0; i< meals.length; i++)
                           _MealCard(meal: meals[i]),
                         ],
@@ -120,7 +101,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   
                    // Expanded(child: Container(),),
-                  SizedBox(height: 200,),
+                  
                   Expanded(
                     child: Container(
                       color: Colors.blueAccent,
@@ -155,73 +136,24 @@ class _MealCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(20)),
         elevation: 4,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Flexible(
-              fit: FlexFit.tight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                child: Image.asset(
-                  meal.imagePath,
-                  width: 150,
-                  fit: BoxFit.fitHeight, //obrazek fit sirka nebo vyska
-                  ),
-                //meal.imagePath,
+              fit: FlexFit.loose,
+              child: Image.asset(
+                meal.imagePath,
               ),
             ),
             Flexible(
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: const EdgeInsets.only(left:12.0),
-              
+              fit: FlexFit.loose,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(meal.mealTime, style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                    color: Colors.blueGrey,
-                  ),
-                  ),
-                  Text(meal.name, style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),),
-                  Text('${meal.kiloCaloriesBurnt} kcal', style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                    color: Colors.blueGrey,
-                  ),),
-
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.access_time,
-                          size: 15,
-                          color: Colors.black12,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "${meal.timeTaken} min",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                      ],
-                    ),
+                  Text(meal.mealTime),
+                  Text(meal.name),
+                  Text('${meal.kiloCaloriesBurnt} kcal'),
+                  Text(meal.timeTaken),
                   SizedBox(height: 16),
                 ],
-              ),
               ),
             ),
           ],
