@@ -3,6 +3,11 @@ import 'package:flutter_application_1/model/meal.dart';
 import 'package:flutter_application_1/ui/pages/meal_detail_screen.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:intl/intl.dart';
+import 'package:flutter_application_1/ui/pages/calorie_entry_screen.dart';
+import 'package:flutter_application_1/ui/pages/profile_detail_screen.dart';
+import 'package:flutter_application_1/globals.dart';
+
+
 
 // trida pro hlavni profilovou obrazovku
 class ProfileScreen extends StatelessWidget {
@@ -32,20 +37,75 @@ class ProfileScreen extends StatelessWidget {
               ),
               label: "",
             ),
+            
+            
+            
             BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(top: 9.0), // odsazeni ikony
-                child: Icon(Icons.search), // ikona pro vyhledavani
-              ),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(top: 9.0), // odsazeni ikony
-                child: Icon(Icons.person), // ikona pro profil
-              ),
-              label: "",
-            ),
+  icon: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              CalorieEntryScreen(),
+          transitionsBuilder:
+              (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0); // animace zprava
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            var tween = Tween(begin: begin, end: end)
+                .chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        ),
+      );
+    },
+    child: Icon(Icons.search),
+  ),
+  label: "",
+),
+
+
+
+              
+BottomNavigationBarItem(
+  icon: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => ProfileDetailScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(-1.0, 0.0); // Animace zleva doprava
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        ),
+      );
+    },
+    child: Icon(Icons.person),
+  ),
+  label: "",
+),
+
+
+
+
+
           ],
         ),
       ),
@@ -74,14 +134,20 @@ class ProfileScreen extends StatelessWidget {
                           fontSize: 18, // velikost pisma
                         ),
                       ),
-                      subtitle: Text(
-                        "hello david", // privitaci text
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800, // tloustka pisma
-                          fontSize: 26, // velikost pisma
-                          color: Colors.black, // barva pisma
-                        ),
-                      ),
+                      subtitle: ValueListenableBuilder<String>(
+  valueListenable: userName,
+  builder: (context, value, child) {
+    return Text(
+      "Hello $value", // dynamické zobrazení jména
+      style: TextStyle(
+        fontWeight: FontWeight.w800,
+        fontSize: 26,
+        color: Colors.black,
+      ),
+    );
+  },
+),
+
                       trailing: ClipOval(child: Image.asset("assets/user.jpg")), // profilova fotka
                     ),
                     SizedBox(
