@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/ui/pages/profile_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await dotenv.load(fileName: ".env"); // Načti konfigurační soubor
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
