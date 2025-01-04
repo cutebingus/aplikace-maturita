@@ -14,101 +14,94 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height; // ziskani vysky obrazovky
-    final width = MediaQuery.of(context).size.width; // ziskani sirky obrazovky
+    //final width = MediaQuery.of(context).size.width; // ziskani sirky obrazovky
     final today = DateTime.now(); // aktualni datum a cas
 
     return Scaffold(
       backgroundColor: const Color(0xFFE9E9E9), // barva pozadi obrazovky
-      bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)), // zakulaceni horniho okraje
-        child: BottomNavigationBar(
-          iconSize: 40, // velikost ikon v navigacnim panelu
-          selectedIconTheme: IconThemeData(
-            color: const Color(0xFF200087), // barva vybrane ikony
-          ),
-          unselectedIconTheme: IconThemeData(
-            color: Colors.black12, // barva nevybranych ikon
-          ),
-          items: [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(top: 9.0), // odsazeni ikony
-                child: Icon(Icons.home), // ikona pro domovskou obrazovku
-              ),
-              label: "",
-            ),
-            
-            
-            
-            BottomNavigationBarItem(
-  icon: GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              CalorieEntryScreen(),
-          transitionsBuilder:
-              (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0); // animace zprava
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            var tween = Tween(begin: begin, end: end)
-                .chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
-        ),
-      );
-    },
-    child: Icon(Icons.search),
-  ),
-  label: "",
-),
-
-
-
-              
-BottomNavigationBarItem(
-  icon: GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => ProfileDetailScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(-1.0, 0.0); // Animace zleva doprava
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
-        ),
-      );
-    },
-    child: Icon(Icons.person),
-  ),
-  label: "",
-),
-
-
-
-
-
-          ],
-        ),
+     
+     bottomNavigationBar: Container(
+  color: const Color(0xFFE9E9E9), // Šedé pozadí za navigačním panelem
+  child: ClipRRect(
+    borderRadius: const BorderRadius.vertical(top: Radius.circular(40)), // Zaoblený navigační panel
+    child: BottomNavigationBar(
+      iconSize: 40, // Velikost ikon
+      backgroundColor: Colors.white, // Bílé pozadí navigačního baru
+      selectedIconTheme: const IconThemeData(
+        color: Color(0xFF200087), // Barva vybrané ikony
       ),
+      unselectedIconTheme: const IconThemeData(
+        color: Colors.black12, // Barva nevybraných ikon
+      ),
+      items: [
+        BottomNavigationBarItem(
+          icon: Padding(
+            padding: const EdgeInsets.only(top: 9.0), // Odsazení ikony
+            child: const Icon(Icons.home), // Ikona pro domovskou obrazovku
+          ),
+          label: "",
+        ),
+        BottomNavigationBarItem(
+          icon: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      CalorieEntryScreen(), // Navigace na "Calorie Entry Screen"
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(1.0, 0.0); // Animace zprava
+                    const end = Offset.zero;
+                    const curve = Curves.easeInOut;
+
+                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                    var offsetAnimation = animation.drive(tween);
+
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            child: const Icon(Icons.search), // Ikona pro vyhledávání
+          ),
+          label: "",
+        ),
+        BottomNavigationBarItem(
+          icon: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      ProfileDetailScreen(), // Navigace na profilový detail
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(1.0, 0.0); // Animace zprava doleva
+                    const end = Offset.zero;
+                    const curve = Curves.easeInOut;
+
+                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                    var offsetAnimation = animation.drive(tween);
+
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            child: const Icon(Icons.person), // Ikona profilu
+          ),
+          label: "",
+        ),
+      ],
+    ),
+  ),
+),
+
       body: Stack(
         children: <Widget>[
           Positioned(
@@ -224,19 +217,15 @@ BottomNavigationBarItem(
                     ),
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal, // posouvani seznamu horizontalne
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 32, // mezera na zacatku seznamu
-                          ),
-                          for (int i = 0; i < meals.length; i++) // cyklus pro vykresleni karet
-                            MealCard(meal: meals[i]), // vykresleni jednotlivych karet jidel
-                        ],
-                      ),
-                    ),
-                  ),
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: meals.length,
+    itemBuilder: (context, index) {
+      return MealCard(meal: meals[index]);
+    },
+  ),
+),
+
                   SizedBox(height: 300), // mezera pod seznamem
                   Expanded(
                     child: Container(
@@ -266,36 +255,36 @@ class RadialProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: RadialPainter(progress), // volani tridy pro vykresleni progress baru
-      child: Container(
-        height: height, // vyska progress baru
-        width: width, // sirka progress baru
-        child: Center(
-          child: RichText(
-            textAlign: TextAlign.center, // zarovnani textu na stred
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: "1731", // hodnota kalorii
-                  style: TextStyle(
-                    fontSize: 32, // velikost pisma
-                    fontWeight: FontWeight.w700, // tloustka pisma
-                    color: const Color(0xFF200087), // barva pisma
+    return RepaintBoundary( // Zabrání zbytečnému překreslení
+      child: CustomPaint(
+        painter: RadialPainter(progress),
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: Center(
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "1731",
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF200087),
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: "\n", // odradkovani
-                ),
-                TextSpan(
-                  text: "kcal left", // popis progress baru
-                  style: TextStyle(
-                    fontSize: 18, // velikost pisma
-                    fontWeight: FontWeight.w500, // tloustka pisma
-                    color: const Color(0xFF200087), // barva pisma
+                  TextSpan(text: "\n"),
+                  TextSpan(
+                    text: "kcal left",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF200087),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -303,6 +292,8 @@ class RadialProgress extends StatelessWidget {
     );
   }
 }
+
+
 
 // trida pro vykresleni radialniho progress baru
 class RadialPainter extends CustomPainter {
