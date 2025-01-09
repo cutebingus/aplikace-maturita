@@ -32,7 +32,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       userName.value = _nameController.text.isEmpty ? "David" : _nameController.text;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Údaje byly úspěšně uloženy!"),
+          content: Text("The data has been successfully saved!"),
         ),
       );
     }

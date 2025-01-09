@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/meal.dart';
 import 'package:flutter_application_1/food_api_service.dart';
 import 'package:flutter_application_1/ui/pages/profile_detail_screen.dart';
 
@@ -132,7 +133,7 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
                                 final item = _searchResults[index]['food'];
                                 return ListTile(
                                   title: Text(
-                                    item['label'] ?? 'Neznámé jídlo',
+                                    item['label'] ?? 'Unknown food',
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                   subtitle: Text(
