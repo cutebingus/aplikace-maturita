@@ -216,15 +216,22 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(
-  child: ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: meals.length,
-    itemBuilder: (context, index) {
-      return MealCard(meal: meals[index]);
+                 Expanded(
+  child: ValueListenableBuilder<List<Meal>>(
+    valueListenable: mealsNotifier, // Listener na jídelní seznam
+    builder: (context, meals, child) {
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: meals.length,
+        itemBuilder: (context, index) {
+          final width = MediaQuery.of(context).size.width; // Získání šířky obrazovky
+          return MealCard(meal: meals[index], width: width); // Předání parametru width
+        },
+      );
     },
   ),
 ),
+
 
                   SizedBox(height: 300), // mezera pod seznamem
                   Expanded(
@@ -241,6 +248,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
 
 // trida pro radialni progress bar
 class RadialProgress extends StatelessWidget {
@@ -409,12 +417,10 @@ class IngredientProgress extends StatelessWidget {
 
 // trida pro jednotlive karty jidel
 class MealCard extends StatelessWidget {
-  final Meal meal; // informace o jidle
+  final Meal meal;
+  final double width;
 
-  const MealCard({
-    Key? key,
-    required this.meal,
-  }) : super(key: key);
+  const MealCard({Key? key, required this.meal, required this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -423,93 +429,74 @@ class MealCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MealDetailScreen(meal: meal), // navigace na detail jidel
+            builder: (context) => MealDetailScreen(meal: meal),
           ),
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(
-          right: 20, // mezera napravo
-          bottom: 10, // mezera dole
+        margin: const EdgeInsets.only(right: 20, bottom: 10),
+        width: 160, // Nastavíme šířku karty
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
-        child: Material(
-          borderRadius: BorderRadius.all(Radius.circular(20)), // zakulaceni karty
-          elevation: 4, // stin karty
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, // zarovnani obsahu na zacatek
-            mainAxisSize: MainAxisSize.max, // maximalni velikost obsahu
-            children: <Widget>[
-              Flexible(
-                fit: FlexFit.tight, // rozlozeni obsahu karty
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(20)), // zakulaceni obrazku
-                  child: Image.asset(
-                    meal.imagePath, // cesta k obrazku
-                    width: 160, // sirka obrazku
-                    fit: BoxFit.fitHeight, // uprava obrazku na vysku
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              child: meal.imagePath.isNotEmpty && meal.imagePath.startsWith("http")
+                  ? Image.network(
+                      meal.imagePath,
+                      height: 100,
+                      width: 160,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Padding(
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.0),
+                        child: Image.asset(
+                          'assets/hladovec.jpg',
+                          height: 100,
+                          width: 160 - (width * 0.0), // Úprava šířky pro padding
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.0),
+                      child: Image.asset(
+                        'assets/hladovec.jpg',
+                        height: 100,
+                        width: 160 - (width * 0.0), // Úprava šířky pro padding
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                meal.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
-              Flexible(
-                fit: FlexFit.tight, // rozlozeni obsahu karty
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0), // odsazeni textu
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // zarovnani textu doleva
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // rozlozeni textu
-                    children: [
-                      SizedBox(height: 5), // mezera
-                      Text(
-                        meal.mealTime, // cas jidla
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500, // tloustka pisma
-                          fontSize: 17, // velikost pisma
-                          color: Colors.blueGrey, // barva textu
-                        ),
-                      ),
-                      Text(
-                        meal.name, // nazev jidla
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700, // tloustka pisma
-                          fontSize: 18, // velikost pisma
-                          color: Colors.black, // barva textu
-                        ),
-                      ),
-                      Text(
-                        '${meal.kiloCaloriesBurnt} kcal', // pocet kalorii
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500, // tloustka pisma
-                          fontSize: 15, // velikost pisma
-                          color: Colors.blueGrey, // barva textu
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.access_time, // ikona casu
-                            size: 15, // velikost ikony
-                            color: Colors.black12, // barva ikony
-                          ),
-                          SizedBox(
-                            width: 4, // mezera
-                          ),
-                          Text(
-                            "${meal.timeTaken} min", // cas pripravy
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500, // tloustka pisma
-                              fontSize: 14, // velikost pisma
-                              color: Colors.blueGrey, // barva textu
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16), // mezera
-                    ],
-                  ),
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                 "${(double.tryParse(meal.kiloCaloriesBurnt) ?? 0).toStringAsFixed(1)} kcal", // Přidání maximální hodnoty jako desetinné číslo
+        style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

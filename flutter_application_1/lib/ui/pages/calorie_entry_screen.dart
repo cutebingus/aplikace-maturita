@@ -63,17 +63,20 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
     });
   }
 
-  void _saveSelectedFoods() {
+void _saveSelectedFoods() {
   for (var food in _selectedFoods) {
-    addMealToToday(Meal(
-      mealTime: "Anytime", // Nastavit čas dle potřeby
-      name: food['food']['label'] ?? "Unknown",
-      imagePath: food['food']['image'] ?? "",
-      kiloCaloriesBurnt: (food['food']['nutrients']['ENERC_KCAL'] ?? 0).toString(),
-      timeTaken: "10", // Nastavit čas dle potřeby
-      preparation: "N/A", // Příprava dle potřeby
-      ingredients: ["Placeholder ingredient"], // Doplňte podle potřeby
-    ));
+    mealsNotifier.value = [
+      ...mealsNotifier.value,
+      Meal(
+        mealTime: "Anytime", // Nastavit čas dle potřeby
+        name: food['food']['label'] ?? "Unknown",
+        imagePath: food['food']['image'] ?? "",
+        kiloCaloriesBurnt: (food['food']['nutrients']['ENERC_KCAL'] ?? 0).toString(),
+        timeTaken: "10", // Nastavit čas dle potřeby
+        preparation: "N/A", // Příprava dle potřeby
+        ingredients: ["Placeholder ingredient"], // Doplňte podle potřeby
+      )
+    ];
   }
 
   ScaffoldMessenger.of(context).showSnackBar(

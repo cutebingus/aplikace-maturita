@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 class Meal {
   final String mealTime;
@@ -19,6 +20,7 @@ class Meal {
     required this.ingredients,
   });
 }
+
 
 // Původní seznam jídel
 final List<Meal> meals = [];
@@ -52,3 +54,6 @@ List<Meal> getTodayMeals() {
   resetMealsIfNeeded();
   return dailyMeals[getCurrentDay()] ?? [];
 }
+
+// ValueNotifier pro správu seznamu jídel
+final ValueNotifier<List<Meal>> mealsNotifier = ValueNotifier<List<Meal>>([]);
