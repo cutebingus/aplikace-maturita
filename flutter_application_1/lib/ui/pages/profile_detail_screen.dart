@@ -44,7 +44,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       backgroundColor: const Color(0xFFE9E9E9),
       appBar: AppBar(
         title: Text(
-          "Upravit profil",
+          "Edit profile",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -91,7 +91,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: "Zadejte jméno",
+                  labelText: "Entry name",
                   labelStyle: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
@@ -114,7 +114,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 controller: _weightController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: "Zadejte váhu (kg)",
+                  labelText: "Entry weight (kg)",
                   labelStyle: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
@@ -137,7 +137,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                 controller: _heightController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: "Zadejte výšku (cm)",
+                  labelText: "Entry height (cm)",
                   labelStyle: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
@@ -159,7 +159,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               
               
 Text(
-  "Vyberte cíl:",
+  "Select a goal:",
   style: TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 18,
@@ -169,7 +169,7 @@ SizedBox(height: 10),
 Column(
   children: [
     RadioListTile(
-      title: Text("Přibrat"),
+      title: Text("Gain weight"),
       value: "gain",
       groupValue: _goal,
       onChanged: (value) {
@@ -179,7 +179,7 @@ Column(
       },
     ),
     RadioListTile(
-      title: Text("Zhubnout"),
+      title: Text("Lose weight"),
       value: "lose",
       groupValue: _goal,
       onChanged: (value) {
@@ -189,7 +189,7 @@ Column(
       },
     ),
     RadioListTile(
-      title: Text("Udržet váhu"),
+      title: Text("Maintain weight"),
       value: "maintain",
       groupValue: _goal,
       onChanged: (value) {
@@ -212,12 +212,12 @@ Column(
       int calorieGoal = _calculateCalories();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Váš kalorický cíl: $calorieGoal kcal"),
+          content: Text("Your calorie goal: $calorieGoal kcal"),
         ),
       );
     }
   },
-  child: Text("Spočítat kalorický cíl"),
+  child: Text("Calculate calorie goal"),
   style: ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF200087), // Barva tlačítka
     foregroundColor: Colors.white, // Barva textu
@@ -231,7 +231,7 @@ Column(
 SizedBox(height: 10),
 ElevatedButton(
   onPressed: _saveDetails,
-  child: Text("Uložit údaje"),
+  child: Text("Save data"),
   style: ElevatedButton.styleFrom(
     backgroundColor: const Color(0xFF200087), // Barva tlačítka
     foregroundColor: Colors.white, // Barva textu

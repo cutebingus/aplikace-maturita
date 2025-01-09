@@ -73,7 +73,7 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Vyhledat a zapsat jídlo',
+          'Search and record food',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -92,7 +92,7 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
             TextField(
               controller: _searchController,
               decoration: const InputDecoration(
-                labelText: 'Vyhledat jídlo',
+                labelText: 'Search food',
                 labelStyle: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
@@ -122,7 +122,7 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
                       child: _searchResults.isEmpty
                           ? const Center(
                               child: Text(
-                                'Žádné výsledky k zobrazení',
+                                'No results to display',
                                 style: TextStyle(fontSize: 16),
                               ),
                             )
