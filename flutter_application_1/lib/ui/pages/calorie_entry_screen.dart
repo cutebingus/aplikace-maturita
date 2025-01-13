@@ -179,7 +179,6 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
                                   fit: BoxFit.cover,
                                 )
                               : const Icon(Icons.fastfood),
-                          // removed selection or multiple selection
                           // trailing: IconButton(
                           //   icon: Icon(
                           //     isSelected ? Icons.check_box : Icons.check_box_outline_blank,
@@ -194,7 +193,6 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
                     ),
                   ),
             const SizedBox(height: 20),
-            // since logging is handled in details screen.
             // ElevatedButton(
             //   onPressed: _saveSelectedFoods,
             //   child: const Text("Save Selected Foods"),

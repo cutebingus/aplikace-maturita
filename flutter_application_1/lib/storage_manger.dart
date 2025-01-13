@@ -7,16 +7,16 @@ Future<String> moveToCachePath(String path) async {
     throw ArgumentError('Path cannot be empty');
   }
 
-// Get the application's cache directory
+// Ziskani cache directory aplikace
   Directory cacheDir = await getApplicationCacheDirectory();
   String fileName = path
       .split('/')
       .last;
 
-// Create the destination path
   String destinationPath = '${cacheDir.path}/$fileName';
 
-// Copy the file
+// kopie souboru
+
   try {
     File sourceFile = File(path);
     await sourceFile.copy(destinationPath);

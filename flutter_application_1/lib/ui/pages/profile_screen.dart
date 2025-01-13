@@ -354,11 +354,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               return GridView.builder(
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, // Number of items per row
-                                  crossAxisSpacing: 10, // Space between columns
-                                  mainAxisSpacing: 10, // Space between rows
+                                  crossAxisCount: 2, // Pocet jidel za radek
+                                  crossAxisSpacing: 10, // Misto mezi radky
+                                  mainAxisSpacing: 10, // misto mezi sloupci
                                   childAspectRatio:
-                                      0.9, // Adjust based on your card design
+                                      0.9, 
                                 ),
                                 itemCount: meals.length,
                                 itemBuilder: (context, index) {
@@ -369,15 +369,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     width: width,
                                     onTap: () {
                                       _loadProfileData();
-                                    }, // Pass width if necessary
+                                    },
                                   );
                                 },
                                 padding: const EdgeInsets.all(10),
-                                // Optional: Add padding around the grid
+
                                 shrinkWrap: true,
-                                // Use if inside a scrollable parent
                                 physics:
-                                    const NeverScrollableScrollPhysics(), // Disable internal scrolling
+                                    const NeverScrollableScrollPhysics(),
                               );
                             },
                           ),
