@@ -5,11 +5,12 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseService {
-  // nastaveni instance public
+  // nastaveni public
   static final DatabaseService instance = DatabaseService._();
   static Database? _database;
 
   DatabaseService._();
+
   factory DatabaseService() => instance;
 
   static Database get database => _database!;
@@ -19,7 +20,7 @@ class DatabaseService {
 
     _database = await _initDatabase();
 
-    // kontrola jestli presla pulnoc
+    // kontrola pulnoci
     await _checkAndResetIfNeeded();
     return _database!;
   }
@@ -33,14 +34,14 @@ class DatabaseService {
     final now = DateTime.now();
     final todayMidnight = DateTime(now.year, now.month, now.day);
 
+    // Posledni logged meal time
     final List<Map<String, dynamic>> lastMeal =
         await db.query('foods', orderBy: 'loggedTime DESC', limit: 1);
 
     if (lastMeal.isNotEmpty) {
       final lastLoggedTime = DateTime.fromMillisecondsSinceEpoch(
           lastMeal.first['loggedTime'] as int);
-
-      // pokud posledni jidlo pred pulnoci, resetovat hodnoty
+  // pokud posledni logged meal bylo pred midnight resetuje ceny
       if (lastLoggedTime.isBefore(todayMidnight)) {
         final profile = await fetchProfile();
         if (profile != null) {
@@ -68,7 +69,6 @@ class DatabaseService {
       path,
       version: 1,
       onCreate: (db, version) async {
-
         //
         await db.execute('''
           CREATE TABLE foods (
@@ -180,5 +180,18 @@ class DatabaseService {
   Future<void> deleteMeal(Meal meal) async {
     final db = database;
     await db.delete('foods', where: 'id = ?', whereArgs: [meal.id]);
+
+    Profile? profile = await fetchProfile();
+
+    if (profile == null) {
+      throw Exception("Profile not found");
+    }
+
+    profile.caloriesLeft += meal.kiloCaloriesBurnt.toInt();
+    profile.proteinLeft += meal.protein.toInt();
+    profile.carbsLeft += meal.carbs.toInt();
+    profile.fatLeft += meal.fat.toInt();
+    await db.update('profiles', profile.toMap(),
+        where: 'id = ?', whereArgs: [profile.id]);
   }
 }
