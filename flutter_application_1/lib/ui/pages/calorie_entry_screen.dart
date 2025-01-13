@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/meal.dart';
 import 'package:flutter_application_1/food_api_service.dart';
 
+import 'meal_detail_screen.dart';
+
 class CalorieEntryScreen extends StatefulWidget {
   @override
   _CalorieEntryScreenState createState() => _CalorieEntryScreenState();
@@ -63,28 +65,30 @@ class _CalorieEntryScreenState extends State<CalorieEntryScreen> {
     });
   }
 
-void _saveSelectedFoods() {
-  for (var food in _selectedFoods) {
-    mealsNotifier.value = [
-      ...mealsNotifier.value,
-      Meal(
-        mealTime: "Anytime", // Nastavit čas dle potřeby
-        name: food['food']['label'] ?? "Unknown",
-        imagePath: food['food']['image'] ?? "",
-        kiloCaloriesBurnt: (food['food']['nutrients']['ENERC_KCAL'] ?? 0).toString(),
-        timeTaken: "10", // Nastavit čas dle potřeby
-        preparation: "N/A", // Příprava dle potřeby
-        ingredients: ["Placeholder ingredient"], // Doplňte podle potřeby
-      )
-    ];
+  void _saveSelectedFoods() {
+    for (var food in _selectedFoods) {
+      mealsNotifier.value = [
+        ...mealsNotifier.value,
+        Meal(
+          mealTime: "Anytime",
+          // Nastavit čas dle potřeby
+          name: food['food']['label'] ?? "Unknown",
+          imagePath: food['food']['image'] ?? "",
+          kiloCaloriesBurnt: (food['food']['nutrients']['ENERC_KCAL'] ?? 0),
+          timeTaken: "10",
+          // Nastavit čas dle potřeby
+          preparation: "N/A",
+          // Příprava dle potřeby
+          ingredients: ["Placeholder ingredient"], // Doplňte podle potřeby
+        )
+      ];
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Vybraná jídla byla uložena!")),
+    );
+    Navigator.pop(context);
   }
-
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(content: Text("Vybraná jídla byla uložena!")),
-  );
-  Navigator.pop(context);
-}
-
 
   @override
   void dispose() {
@@ -143,16 +147,29 @@ void _saveSelectedFoods() {
                       itemCount: _searchResults.length,
                       itemBuilder: (context, index) {
                         final food = _searchResults[index]['food'];
-                        final isSelected = _selectedFoods.contains(_searchResults[index]);
+                        final isSelected =
+                            _selectedFoods.contains(_searchResults[index]);
 
                         return ListTile(
+                          onTap: () {
+
+                            // pushing directly to meal screen.
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MealDetailScreen(
+                                    meal: Meal.fromMap(_searchResults[index])),
+                              ),
+                            );
+                          },
                           title: Text(
                             food['label'] ?? 'Unknown food',
                             style: const TextStyle(fontSize: 16),
                           ),
                           subtitle: Text(
                             "Kalorie: ${food['nutrients']['ENERC_KCAL']?.toStringAsFixed(2) ?? 'Neznámé'} kcal",
-                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.grey),
                           ),
                           leading: food['image'] != null
                               ? Image.network(
@@ -162,30 +179,35 @@ void _saveSelectedFoods() {
                                   fit: BoxFit.cover,
                                 )
                               : const Icon(Icons.fastfood),
-                          trailing: IconButton(
-                            icon: Icon(
-                              isSelected ? Icons.check_box : Icons.check_box_outline_blank,
-                              color: isSelected ? Colors.green : Colors.grey,
-                            ),
-                            onPressed: () {
-                              _toggleFoodSelection(_searchResults[index]);
-                            },
-                          ),
+                          // removed selection or multiple selection
+                          // trailing: IconButton(
+                          //   icon: Icon(
+                          //     isSelected ? Icons.check_box : Icons.check_box_outline_blank,
+                          //     color: isSelected ? Colors.green : Colors.grey,
+                          //   ),
+                          //   onPressed: () {
+                          //     _toggleFoodSelection(_searchResults[index]);
+                          //   },
+                          // ),
                         );
                       },
                     ),
                   ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveSelectedFoods,
-              child: const Text("Save Selected Foods"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF200087), // Fialová barva tlačítka
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
+            // since logging is handled in details screen.
+            // ElevatedButton(
+            //   onPressed: _saveSelectedFoods,
+            //   child: const Text("Save Selected Foods"),
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: const Color(0xFF200087),
+            //     // Fialová barva tlačítka
+            //     foregroundColor: Colors.white,
+            //     padding:
+            //         const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            //     textStyle:
+            //         const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            //   ),
+            // ),
           ],
         ),
       ),

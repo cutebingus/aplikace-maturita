@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_application_1/model/meal.dart';
 import 'package:http/http.dart' as http;
 
 class FoodApiService {
@@ -21,10 +22,15 @@ class FoodApiService {
           return [];
         }
       } else {
-        throw Exception("Chyba: ${response.statusCode} - ${response.reasonPhrase}");
+        throw Exception(
+            "Chyba: ${response.statusCode} - ${response.reasonPhrase}");
       }
     } catch (e) {
       throw Exception("Chyba při načítání dat z API: $e");
     }
   }
+
+// } catch (e) {
+//   throw Exception("Chyba při načítání dat z API: $e");
+// }
 }

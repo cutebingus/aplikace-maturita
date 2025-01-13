@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/database_service.dart';
 import 'package:flutter_application_1/model/meal.dart';
 
 class MealDetailScreen extends StatefulWidget {
@@ -11,7 +12,8 @@ class MealDetailScreen extends StatefulWidget {
   _MealDetailScreenState createState() => _MealDetailScreenState();
 }
 
-class _MealDetailScreenState extends State<MealDetailScreen> with SingleTickerProviderStateMixin {
+class _MealDetailScreenState extends State<MealDetailScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -43,6 +45,23 @@ class _MealDetailScreenState extends State<MealDetailScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          try {
+            DatabaseService.instance.logMeal(widget.meal);
+            Navigator.of(context).pop();
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Failed to log meal: $e"),
+              ),
+            );
+          }
+        },
+        label: const Text("Log Meal"),
+        icon: const Icon(Icons.add),
+      ),
       backgroundColor: const Color(0xFFE9E9E9),
       body: FadeTransition(
         opacity: _fadeAnimation, // obaleni obsahu do fade animace
@@ -51,7 +70,6 @@ class _MealDetailScreenState extends State<MealDetailScreen> with SingleTickerPr
             SliverAppBar(
               snap: true,
               floating: true,
-              backgroundColor: const Color(0xFF200087),
               expandedHeight: 300,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -59,11 +77,19 @@ class _MealDetailScreenState extends State<MealDetailScreen> with SingleTickerPr
               flexibleSpace: FlexibleSpaceBar(
                 // zobrazeni obrazku vybraneho jidla
                 background: ClipRRect(
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(40)),
-                  child: Image.asset(
-                    widget.meal.imagePath,
-                    fit: BoxFit.cover,
-                  ),
+                  borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(40)),
+                  child: widget.meal.imagePath == null
+                      ? Container(
+                          color: Colors.grey[200],
+                          child: Center(
+                            child: Text("No Image"),
+                          ),
+                        )
+                      : Image.network(
+                          widget.meal.imagePath!,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),
@@ -74,7 +100,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> with SingleTickerPr
                   // zobrazeni detailu jidla, jako jsou cas a kalorie
                   ListTile(
                     title: Text(
-                      widget.meal.mealTime.toUpperCase(),
+                      widget.meal.mealTime ?? "".toUpperCase(),
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 14,
@@ -142,26 +168,30 @@ class _MealDetailScreenState extends State<MealDetailScreen> with SingleTickerPr
                   ),
                   SizedBox(height: 10),
                   // seznam ingredienci pro jidlo
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        for (int i = 0; i < widget.meal.ingredients.length; i++)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 6),
-                            child: Text(
-                              widget.meal.ingredients[i],
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+
+                  if (widget.meal.ingredients != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          for (int i = 0;
+                              i < widget.meal.ingredients!.length;
+                              i++)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 6),
+                              child: Text(
+                                widget.meal.ingredients![i],
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
                   SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -176,9 +206,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> with SingleTickerPr
                   ),
                   // instrukce k priprave jidla
                   Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32),
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 32),
                     child: Text(
-                      widget.meal.preparation,
+                      widget.meal.preparation ?? "",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

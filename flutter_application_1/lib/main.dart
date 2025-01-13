@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/database_service.dart';
 import 'package:flutter_application_1/ui/pages/profile_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -11,6 +12,8 @@ void main() async {
   } catch (e) {
     print("Chyba při načítání .env: $e");
   }
+
+  DatabaseService.instance.init();
   runApp(MyApp());
 }
 
