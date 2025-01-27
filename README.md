@@ -52,4 +52,7 @@ Podobné aplikace dostupné na trhu:
 ## Plánované vylepšení 🚀  
 1. Přidání možnosti sledování aktivit (např. počet kroků, cvičení).  
 2. Možnost synchronizace s nositelnými zařízeními (např. Fitbit, Apple Watch).  
-3. Statistiky a grafy pro dlouhodobé sledování pokroku.  
+3. Statistiky a grafy pro dlouhodobé sledování pokroku.
+
+## Odkaz na video 🎞
+https://www.youtube.com/watch?v=38FsaRMGMGU
